@@ -1,4 +1,6 @@
-tegr
-====
+flyrepos
+========
 
-TYPO3 Extension GIT Repository (getting the github feeling into TYPO3)
+*Cause live is to short to build packages*
+
+Fly repos manager (Only distributed systems will survive)
