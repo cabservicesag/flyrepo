@@ -5,6 +5,11 @@ flyrepos
 
 Fly repos manager (Only distributed systems will survive)
 
+## user story
+
+see features/ for further explanation
+
+
 ## flyrepo index standard
 
 	./
