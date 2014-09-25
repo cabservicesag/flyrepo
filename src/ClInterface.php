@@ -20,7 +20,10 @@
 namespace cabservicesag\FlyRepo;
 
 class ClInterface {
+	public $flyRepo = false;
 	private $argv = array();
+	private $commandName = false;
+	private $command = false;
 	
 	/**
 	 * ClInterface::run($argv)
@@ -35,12 +38,55 @@ class ClInterface {
 	 * @param array $argv
 	 * @return \cabservicesag\FlyRepo\ClInterface
 	 */
-	public static function run($argv) {
+	public static function start($argv) {
 		$clInterface = new ClInterface();
+		
+		// remove flyrepo.php from arguments if called php flyrepo.php
+		if($argv[1] == __FILE__) {
+			$argv = array_shift($argv);
+		}
+		
 		$clInterface->setArgv($argv);
-		$clInterface->openFlyRepo('./');
 		return $clInterface;
 	}
+	
+	/**
+	 * run the command
+	 * 
+	 * @return \cabservicesag\FlyRepo\ClInterface 
+	 */
+	public function run() {
+		if(empty($this->argv[1])) {
+			$this->showUsage();
+			throw new \Exception('no command given');
+		}
+		
+		$this->commandName = preg_replace('/[\s\W]+/', '', $this->argv[1]);
+		$commandClass = '\\cabservicesag\\FlyRepo\\Command\\' . ucfirst($this->commandName);
+		$this->show($commandClass);
+		if(!class_exists($commandClass, true)) {
+			throw new \Exception ('command "' . $this->commandName . '" not found.');
+		}
+		$this->command = new $commandClass($this, $this->argv);
+		return $this;
+	}
+	
+	/**
+	 * show usage
+	 */
+	public function showUsage() {
+		$this->show('Usage: flyrepo.php <command>');
+	}
+	
+	/**
+	 * show a line of data
+	 * 
+	 * @param string $print
+	 */
+	public function show($output) {
+		print($output."\n");
+	}
+	
 	
 	/**
 	 * open the fly repository
