@@ -32,7 +32,8 @@ if(require_once('vendor/autoload.php')) {
 }
 
 try {
-	$clInterface = \cabservicesag\FlyRepo\ClInterface::run($argv);
+	$clInterface = \cabservicesag\FlyRepo\ClInterface::start($argv)->run();
 } catch (Exception $flyRepoException ) {
-	print($flyRepoException->getMessage()."\n");	
+	print($flyRepoException->getMessage()."\n");
+	exit(1);
 }
