@@ -1,0 +1,20 @@
+{
+	"name": "wingsuitist/flyrepo",
+	"description": "FylRepo: Cause live is to short to build packages!",
+	"license": "GPLv3",
+	"authors": [
+		{
+			"name": "Jonas Felix",
+			"email": "jf@cabag.ch"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"cabservicesag\\FlyRepo\\": ["src/"]
+		}
+	},
+	"minimum-stability": "dev",
+	"require": {
+		"nategood/httpful": "dev-master"
+	}
+}
