@@ -1,12 +1,38 @@
+#!/usr/bin/env php
 <?php
 
-echo "FlyRepo: Live is to short to build packages!\n\n";
+/* 
+ * Copyright (C) 2014 Jonas Felix <jf@cabag.ch>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-// temporary, will be replaced by autoloader
-require_once('src/FlyRepo.php');
+echo "FlyRepo: *Cause live is to short to build packages*\n\n";
+
+/*
+ * use composer autoloader if possible
+ * it has to work without composer
+ */
+if(require_once('vendor/autoload.php')) {
+	define('FLYREPO_COMPOSER', true);
+} else {
+	define('FLYREPO_COMPOSER', false);
+	require_once('nocomposerAutoloader.php');
+}
 
 try {
-	$flyRepo = \cabservicesag\FlyRepo\FlyRepo::open('./');
+	$clInterface = \cabservicesag\FlyRepo\ClInterface::run($argv);
 } catch (Exception $flyRepoException ) {
 	print($flyRepoException->getMessage()."\n");	
 }
