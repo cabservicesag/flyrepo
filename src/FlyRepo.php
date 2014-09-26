@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright (C) 2014 Jonas Felix <jf@cabag.ch>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,22 +20,53 @@
 namespace cabservicesag\FlyRepo;
 
 class FlyRepo {
+
 	const FLYREPO_DIR = '.flyrepo';
-	
+	const CONF_FILE = 'config.json';
+
+	public $dir;
+
 	/**
 	 * use FlyRepo::open('./')->doSomething() pattern
 	 */
-	private function __construct() {
+	private function __construct($dir) {
+		$this->dir = $dir;
 	}
-	
+
 	/**
 	 * open the flyrepo of this mainfolder
 	 * 
-	 * @param string $basePath path to the directory containing .flyrepo
+	 * @param string $dir path to the directory containing .flyrepo
 	 */
-	public static function open($basePath) {
-		if(!is_dir($basePath.self::FLYREPO_DIR)) {
-			throw new \Exception('could not find flyrepo directory '.$basePath.self::FLYREPO_DIR);
+	public static function open($dir) {
+		if (!is_dir($dir . '/' . self::FLYREPO_DIR)) {
+			throw new \Exception('could not find flyrepo directory ' . $dir . self::FLYREPO_DIR);
 		}
+
+		$flyRepo = new FlyRepo($dir);
+
+		return $dir;
 	}
+
+	/**
+	 * init a new flyrepo of this mainfolder
+	 * 
+	 * @param string $dir path to the directory containing .flyrepo
+	 */
+	public static function init($dir, $conf) {
+		$flyRepoPath = $dir . '/' . self::FLYREPO_DIR;
+		
+		if (is_dir($flyRepoPath)) {
+			throw new \Exception('flyrepo already exists, please remove first to init from scratch ' . $flyRepoPath);
+		}
+
+		mkdir($dir . '/' . self::FLYREPO_DIR);
+		$confData = json_encode($conf, JSON_PRETTY_PRINT);
+		file_put_contents($flyRepoPath . '/' . self::CONF_FILE, $confData);
+
+		$flyRepo = self::open($dir);
+
+		return $flyRepo;
+	}
+
 }
