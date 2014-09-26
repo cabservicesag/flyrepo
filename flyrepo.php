@@ -18,13 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-echo "FlyRepo: *Cause live is to short to build packages*\n\n";
-
 /*
  * use composer autoloader if possible
  * it has to work without composer
  */
-if(require_once('vendor/autoload.php')) {
+if(file_exists('vendor/autoload.php')) {
+	require_once('vendor/autoload.php');
 	define('FLYREPO_COMPOSER', true);
 } else {
 	define('FLYREPO_COMPOSER', false);
