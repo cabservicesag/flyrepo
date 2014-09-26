@@ -21,16 +21,20 @@ namespace cabservicesag\FlyRepo\Command;
 
 abstract class AbstractCommand {
 	const AUTO_OPEN = true;
-	private $clInterface;
-	private $argv;
+	public $clInterface;
+	public $options = array();
+	public $availableOptoins = array();
 	
 	abstract public function run();
 	
 	/**
 	 * @param cabservicesag\FlyRepo\\ClInterface $clInterface
 	 */
-	public function __construct($clInterface, $argv) {
+	public function __construct($clInterface) {
 		$this->clInterface = $clInterface;
-		$this->argv = $argv;
+		
+		// get options for this command
+		$this->options = \cabservicesag\FlyRepo\ClInterface::parseOptions(
+				$this->availableOptions, $this->clInterface->argv);
 	}
 }

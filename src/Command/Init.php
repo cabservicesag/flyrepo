@@ -21,11 +21,18 @@ namespace cabservicesag\FlyRepo\Command;
 
 class Init extends AbstractCommand {
 	const AUTO_OPEN = false;
+	public $availableOptions = array(
+		'i::' => 'url of your index repository',
+		'p::' => 'url of your project repository'
+		);
 	
 	public function run() {
-		if(is_dir($this->argv['2'])) {
-			$basePath = $this->argv['2'];
-		}
-		$this->clInterface->flyRepo = \cabservicesag\FlyRepo\FlyRepo::ini($basePath);
+		$conf = array (
+			'myIndexRepository' => $this->options[i],
+			'myProjectRepository' => $this->options[i],
+		);
+		
+		$this->clInterface->flyRepo = \cabservicesag\FlyRepo\FlyRepo::init(
+				$this->clInterface->dir, $conf);
 	}
 }
