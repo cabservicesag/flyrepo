@@ -20,6 +20,8 @@
 namespace cabservicesag\FlyRepo;
 
 class ClInterface {
+	const COMMAND_NAMESPACE = 'cabservicesag\\FlyRepo\\Command\\';
+	
 	public $flyRepo = false;
 	
 	public $argv = array();
@@ -27,7 +29,8 @@ class ClInterface {
 	private $command = false;
 	private $commandName = false;
 	
-	public $usageInfo = "FlyRepo: *Cause live is to short to build packages*\n\nUsage: flyrepo.php <command> \n\n";
+	const USAGE_INFO = "FlyRepo: *Cause live is to short to build packages*\n\nUsage: flyrepo.php <command> \n\n";
+	public $availableCommands = array('init');
 	public $availableOptions = array(
 		'C:' => 'Change working directory.'
 		);
@@ -67,7 +70,7 @@ class ClInterface {
 		
 		// try to find the command and execute it
 		$this->commandName = preg_replace('/[\s\W]+/', '', $this->argv[1]);
-		$commandClass = 'cabservicesag\\FlyRepo\\Command\\' . ucfirst($this->commandName);
+		$commandClass = self::COMMAND_NAMESPACE . ucfirst($this->commandName);
 		if(!class_exists($commandClass, true)) {
 			throw new \Exception ('command "' . $this->commandName . '" not found.');
 		}
@@ -116,11 +119,16 @@ class ClInterface {
 	 * show usage
 	 */
 	public function showUsage() {
-		$optionsExplained = "Options: \n";
+		$optionsExplained = "General Options: \n";
 		foreach($this->availableOptions as $option => $description) {
-			$optionsExplained .= "- $option \t " . $description;
+			$optionsExplained .= "-$option \t " . $description;
 		}
-		$this->show($this->usageInfo . $optionsExplained . "\n");
+		$commandUsages = "\n\nCommands: \n";
+		foreach($this->availableCommands as $commandName) {
+			$commandClass = self::COMMAND_NAMESPACE . $commandName;
+			$commandUsages .= $commandClass::USAGE_INFO . "\n";
+		}
+		$this->show(self::USAGE_INFO . $optionsExplained . $commandUsages . "\n");
 	}
 	
 	/**

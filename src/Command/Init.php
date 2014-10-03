@@ -20,6 +20,7 @@
 namespace cabservicesag\FlyRepo\Command;
 
 class Init extends AbstractCommand {
+	const USAGE_INFO = 'init - initialize new flyrepo with index and project repository';
 	const AUTO_OPEN = false;
 	public $availableOptions = array(
 		'i::' => 'url of your index repository',
