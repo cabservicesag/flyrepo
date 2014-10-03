@@ -5,7 +5,7 @@ Feature: install
 
   Scenario: install
     Given I am in the direcotry "webroot"
-    When I run "./flyrepo.phar"
+    When I run "curl https://raw.githubusercontent.com/cabservicesag/flyrepo/master/install.php|php"
     Then I should get:
       """
       successfully installed flyrepo
