@@ -25,7 +25,9 @@ class FlyRepo {
 	const CONF_FILE = 'config.json';
 
 	public $dir;
-
+	public $conf;
+	
+	
 	/**
 	 * use FlyRepo::open('./')->doSomething() pattern
 	 */
@@ -59,11 +61,25 @@ class FlyRepo {
 		if (is_dir($flyRepoPath)) {
 			throw new \Exception('flyrepo already exists, please remove first to init from scratch ' . $flyRepoPath);
 		}
-
+		
+		// creat folder and config file
 		mkdir($dir . '/' . self::FLYREPO_DIR);
 		$confData = json_encode($conf, JSON_PRETTY_PRINT);
 		file_put_contents($flyRepoPath . '/' . self::CONF_FILE, $confData);
-
+		
+		// get the repositories up and running
+		$gitWrapper = new \GitWrapper\GitWrapper();
+		
+		// get my index repository
+		$myIndexRepositoryPath = $dir . '/' . self::FLYREPO_DIR . '/' . 'MyIndexRepository';
+		mkdir($myIndexRepositoryPath);
+		$myIndexGit = $gitWrapper->clone($conf['myIndexRepository'], $myIndexRepositoryPath);
+		
+		// get my project repository
+		$myProjectGit = $gitWrapper->clone($conf['myProjectRepository'], $dir . '/tmp-myProjectRepository');
+		rename($dir . '/tmp-myProjectRepository/.git', $dir . '/');
+		
+		// open the repository
 		$flyRepo = self::open($dir);
 
 		return $flyRepo;

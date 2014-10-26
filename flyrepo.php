@@ -22,8 +22,7 @@
  * use composer autoloader if possible
  * it has to work without composer
  */
-if(file_exists('vendor/autoload.php')) {
-	require_once('vendor/autoload.php');
+if(include('vendor/autoload.php')) {
 	define('FLYREPO_COMPOSER', true);
 } else {
 	define('FLYREPO_COMPOSER', false);

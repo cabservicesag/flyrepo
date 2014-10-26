@@ -15,5 +15,6 @@
 	},
 	"minimum-stability": "dev",
 	"require": {
+		"cpliakas/git-wrapper": "~1.0"
 	}
 }

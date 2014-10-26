@@ -24,13 +24,14 @@ class Init extends AbstractCommand {
 	const AUTO_OPEN = false;
 	public $availableOptions = array(
 		'i::' => 'url of your index repository',
-		'p::' => 'url of your project repository'
+		'p::' => 'url of your project repository',
+		'c:' => 'url of your project repository'
 		);
 	
 	public function run() {
 		$conf = array (
 			'myIndexRepository' => $this->options[i],
-			'myProjectRepository' => $this->options[i],
+			'myProjectRepository' => $this->options[p],
 		);
 		
 		$this->clInterface->flyRepo = \cabservicesag\FlyRepo\FlyRepo::init(
